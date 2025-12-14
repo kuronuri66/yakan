@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<link rel="icon" href="favicon.ico">
+
+<html>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        #canvas {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+
+            image-rendering: optimizeSpeed; /* Safari用 */
+            image-rendering: -moz-crisp-edges; /* Firefox用 */
+            image-rendering: -webkit-optimize-contrast; /* Chrome古いバージョン用 */
+            image-rendering: pixelated; /* 最新の推奨設定 */
+        }
+    </style>
+
+    <body bgcolor="#0f0f0f">
+        <canvas id="canvas" width="480" height="360"></canvas>
+        <script src="engine.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>
