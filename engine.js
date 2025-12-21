@@ -2,10 +2,15 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 ctx.fillRect(0, 0, 480, 360);
 let canvasRect = canvas.getBoundingClientRect();
-let CanvasX;
-let CanvasY;
-let scrollX = 0;
-let scrollY = 0;
+let CanvasMouseX;
+let CanvasMouseY;
+let scrollX = -230;
+let scrollY = -50;
+
+function scroll() {
+    scrollX = Math.round(scrollX + (yakanRect.x - 230 - scrollX) / 10);
+    scrollY = Math.round(scrollY + (yakanRect.y - 150 - scrollY) / 10);
+}
 
 //rect{x: ,y: ,width: ,height: }
 function CheckRect(r1,r2) {
@@ -18,15 +23,16 @@ function CheckRect(r1,r2) {
 
 document.addEventListener('mousemove', (e) => {
     canvasRect = canvas.getBoundingClientRect();
-    CanvasX = e.clientX * canvas.width / canvasRect.width;
-    CanvasY = e.clientY * canvas.height / canvasRect.height;
+    const r = Math.max(canvas.width / canvasRect.width, canvas.height / canvasRect.height);
+    CanvasMouseX = (e.clientX - (canvasRect.width - canvas.width / r) / 2) * r;
+    CanvasMouseY = (e.clientY - (canvasRect.height - canvas.height / r) / 2) * r;
 });
 
 
 function RectTouch(Rect) {
     return(
-        Rect.x < CanvasX && CanvasX < Rect.x + Rect.w &&
-        Rect.y < CanvasY && CanvasY < Rect.y + Rect.h
+        Rect.x < CanvasMouseX && CanvasMouseX < Rect.x + Rect.w &&
+        Rect.y < CanvasMouseY && CanvasMouseY < Rect.y + Rect.h
     )
 }
 
