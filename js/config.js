@@ -14,3 +14,7 @@ let imgPaths =
     "damageRectsButton",
     "foregroundRectsButton"
 ]
+let sndPaths = 
+[
+    "kaze1.wav"
+]
