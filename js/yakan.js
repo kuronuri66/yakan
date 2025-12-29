@@ -1,22 +1,19 @@
-let KeyConf = {jump: " ", left: "a", right: "d",}
-let imgPaths = ["yakan1","yakan2","yakan3"]
-
 let yakanRect = {x:0,y:100,w:21,h:20,vx:0,vy:0}
 let yakanAction = "stop";
 let yakanActioni = 0;
 let yakanimg
 let TouchCollider = false;
 
-let colliderRects = [{x:0,y:30,w:480,h:30},{x:501,y:30,w:24,h:24}]
+let colliderRects = [{x:0,y:30,w:480,h:30},{x:501,y:30,w:24,h:24},{x:501,y:100,w:24,h:24}]
 
-function step() {
-    requestAnimationFrame(step);
+function yakan(){
 
-    scroll();
-
-    ctx.fillStyle = "#000a17";
-    ctx.fillRect(0, 0, 480, 360);
-
+    TouchCollider = false;
+    for(let colliderRect of colliderRects){
+        if(CheckRect({x:yakanRect.x+5,y:yakanRect.y-12,w:yakanRect.w - 10,h:yakanRect.h-11},colliderRect)){
+            TouchCollider = true;
+        }
+    }
     if(KeyFlag.right){
         if(!yakanAction == "right"){
             yakanActioni = 0;
@@ -33,10 +30,8 @@ function step() {
     }
 
     if(KeyFlag.jump){
-        for(let colliderRect of colliderRects){
-            if(CheckRect({x:yakanRect.x+5,y:yakanRect.y-12,w:yakanRect.w - 10,h:yakanRect.h-11},colliderRect)){
-                yakanRect.vy =+ 7;
-            }
+        if(TouchCollider){
+            yakanRect.vy = 7;
         }
     }
 
@@ -116,15 +111,7 @@ function step() {
             }
         }
 
-        DrawRect("white",colliderRect)
+        DrawFillRect("white",colliderRect)
     }
-
-    StageEdit();
-
     DrawImageRect(yakanimg,yakanRect)
-}
-
-
-function imgLoadFinish(){
-    step();
 }

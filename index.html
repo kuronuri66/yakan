@@ -5,7 +5,24 @@
 <link rel="icon" href="favicon.ico">
 
 <html>
+    <body bgcolor="#0f0f0f">
+        <canvas id="canvas" width="1440" height="1080"></canvas>
+
+        <script src="js/config.js"></script>
+        <script src="js/engine.js"></script>
+        <script src="js/main.js"></script>
+            <script src="js/yakan.js"></script>
+            <script src="js/stageEdit.js"></script>
+                <script src="js/stageData.js"></script>
+    </body>
+
     <style>
+        @font-face {
+            font-family: "marumonica";
+            src: url("font/x12y16pxMaruMonica.ttf");
+        }
+
+
         html,body {
             margin: 0;
             padding: 0;
@@ -27,11 +44,4 @@
             image-rendering: pixelated; /* 最新の推奨設定 */
         }
     </style>
-
-    <body bgcolor="#0f0f0f">
-        <canvas id="canvas" width="480" height="360"></canvas>
-        <script src="engine.js"></script>
-        <script src="main.js"></script>
-        <script src="edit.js"></script>
-    </body>
 </html>

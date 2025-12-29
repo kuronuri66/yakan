@@ -6,6 +6,7 @@ let CanvasMouseX;
 let CanvasMouseY;
 let scrollX = -230;
 let scrollY = -50;
+ctx.imageSmoothingEnabled = false;
 
 function scroll() {
     scrollX = Math.round(scrollX + (yakanRect.x - 230 - scrollX) / 10);
@@ -24,8 +25,8 @@ function CheckRect(r1,r2) {
 document.addEventListener('mousemove', (e) => {
     canvasRect = canvas.getBoundingClientRect();
     const r = Math.max(canvas.width / canvasRect.width, canvas.height / canvasRect.height);
-    CanvasMouseX = (e.clientX - (canvasRect.width - canvas.width / r) / 2) * r;
-    CanvasMouseY = (e.clientY - (canvasRect.height - canvas.height / r) / 2) * r;
+    CanvasMouseX = Math.floor((e.clientX - (canvasRect.width - canvas.width / r) / 2) * r / 3);
+    CanvasMouseY = Math.floor((e.clientY - (canvasRect.height - canvas.height / r) / 2) * r / 3);
 });
 
 
@@ -37,9 +38,7 @@ function RectTouch(Rect) {
 }
 
 let KeyFlag
-
 let images = {};
-
 window.onload = (e) => {
     KeyFlag = KeyConf;
 
@@ -85,18 +84,43 @@ window.onload = (e) => {
 }
 
 function DrawImageRect(img,r){
-    ctx.drawImage(img, Math.round(r.x) - scrollX, 360 - Math.round(r.y) + scrollY, r.w, r.h)
+    ctx.drawImage(img, (Math.round(r.x) - scrollX)*3, (360 - Math.round(r.y) + scrollY)*3, r.w * 3, r.h *3)
 }
 
-function DrawRect(color,r){
+function DrawFillRect(color,r){
     ctx.fillStyle = color;
-    ctx.fillRect(r.x - scrollX, 360 - r.y + scrollY, r.w, r.h)
+    ctx.fillRect((r.x - scrollX)*3, (360 - r.y + scrollY)*3, (r.w)*3, (r.h)*3)
 }
 
 function DrawStrokeRect(color,r){
     ctx.strokeStyle = color;
-    ctx.lineWidth = 1;
-    ctx.strokeRect(Math.round(r.x - scrollX)+0.5, Math.round(360 - r.y + scrollY) + 0.5, r.w - 1, r.h - 1)
+    ctx.lineWidth = 3;
+    ctx.strokeRect((Math.round(r.x - scrollX)+0.5)*3, (Math.round(360 - r.y + scrollY) + 0.5)*3, (r.w - 1)*3, (r.h - 1)*3)
 }
 
+function DrawText(text,color,r){
+    ctx.font = '48px marumonica';
+    ctx.fillStyle = color;
+    ctx.fillText(text, r.x * 3 , r.y*3);
+}
 
+function DrawImageRectAbs(img,r){
+    ctx.drawImage(img, Math.round(r.x)*3, Math.round(r.y)*3, r.w * 3, r.h *3);
+}
+
+function DrawFillRectAbs(color,r){
+    ctx.fillStyle = color;
+    ctx.fillRect(r.x*3, r.y*3, r.w*3, r.h*3)
+}
+
+function DrawStrokeRectAbs(color,r){
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.strokeRect((Math.round(r.x)+0.5)*3, (Math.round(r.y) + 0.5)*3, (r.w - 1)*3, (r.h - 1)*3)
+}
+
+function DrawTextAbs(text,color,r){
+    ctx.font = '48px marumonica';
+    ctx.fillStyle = color;
+    ctx.fillText(text, r.x * 3 , r.y*3);
+}
