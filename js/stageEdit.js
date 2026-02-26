@@ -3,7 +3,9 @@ const modeChangeButton = {x:200,y:5,w:12,h:12}
 MouseBlockRect = {x:0,y:0,w:24,h:24}
 
 addEventListener('keydown' , (e)=>{
+
     if(e.key == "m"){
+        hajimari.stop(3);
         if(mode == "play"){
             mode = "edit"
         } else{

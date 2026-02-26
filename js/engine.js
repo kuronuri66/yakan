@@ -154,7 +154,7 @@ function DrawStrokeRectAbs(color,r){
 }
 
 function DrawTextAbs(text,color,r){
-    ctx.font = '48px marumonica';
+    ctx.font = `${r.w}px marumonica`;
     ctx.fillStyle = color;
     ctx.fillText(text, r.x * 3 , r.y*3);
 }
@@ -162,3 +162,65 @@ function DrawTextAbs(text,color,r){
 //====================================
 //audio
 //====================================
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const audioBuffers = {};
+
+async function loadSounds() {
+    for (const key in sndPaths) {
+        const response = await fetch("sound/"+key+".wav");
+        const arrayBuffer = await response.arrayBuffer();
+        audioBuffers[key] = await audioCtx.decodeAudioData(arrayBuffer);
+    }
+}
+
+function playSound(key,volume) {
+    const config = sndPaths[key];
+    const buffer = audioBuffers[key];
+
+    if (!buffer) return;
+
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    if(config.loop){
+        source.loop = true;
+        source.loopStart = config.loopStart;
+        source.loopEnd = config.loopEnd;
+    }else {
+        source.loop = false;
+    }
+
+    const gainNode = audioCtx.createGain();
+    if(config.fade){
+        const now = audioCtx.currentTime;
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(volume, now + 2.0);
+    }else{
+        gainNode.gain.value = volume;
+    }
+    
+
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    source.start(0);
+    return {
+        source: source,
+        gainNode: gainNode,
+        stop: function(fadeOutTime = 2.0) {
+            const stopNow = audioCtx.currentTime;
+            gainNode.gain.setValueAtTime(gainNode.gain.value, stopNow);
+            gainNode.gain.linearRampToValueAtTime(0, stopNow + fadeOutTime);
+            source.stop(stopNow + fadeOutTime);
+        }
+    };
+}
+
+let hajimari
+
+window.addEventListener('click', async () => {
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
+    
+    await loadSounds();
+    hajimari = playSound('hajimari',0.2);
+}, { once: true });
